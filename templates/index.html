@@ -1,65 +1,59 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>🫦 Swipe 🫦</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <meta charset="UTF-8">
+  <title>Swipe</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>🫦 Swipe 🫦</h1>
-    <div class="slider">
+  <h1>🫦 Swipe 🫦</h1>
+  <div class="container">
+    {% if photos %}
+      <div class="photo-stack">
         {% for photo in photos %}
-            <div class="card">
-                <img src="{{ photo }}" alt="Photo">
-            </div>
+          <img src="{{ photo }}" class="photo {% if not loop.first %}hidden{% endif %}" />
         {% endfor %}
-    </div>
+      </div>
+      <div class="controls">
+        <button onclick="prevPhoto()">←</button>
+        <button onclick="resetPhotos()">↺</button>
+        <button onclick="nextPhoto()">→</button>
+      </div>
+    {% else %}
+      <p class="empty">Aucune image disponible.</p>
+    {% endif %}
+  </div>
 
-    <script>
-        let current = 0;
-        const cards = document.querySelectorAll('.card');
-        function showCard(index) {
-            cards.forEach((card, i) => {
-                card.style.display = i === index ? 'block' : 'none';
-            });
-        }
+  <script>
+    let current = 0;
+    const photos = document.querySelectorAll('.photo');
 
-        function nextCard() {
-            current = (current + 1) % cards.length;
-            showCard(current);
-        }
+    function updateDisplay() {
+      photos.forEach((p, i) => {
+        p.classList.toggle('hidden', i !== current);
+      });
+    }
 
-        function prevCard() {
-            current = (current - 1 + cards.length) % cards.length;
-            showCard(current);
-        }
+    function nextPhoto() {
+      current = (current + 1) % photos.length;
+      updateDisplay();
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextCard();
-            if (e.key === 'ArrowLeft') prevCard();
-        });
+    function prevPhoto() {
+      current = (current - 1 + photos.length) % photos.length;
+      updateDisplay();
+    }
 
-        document.addEventListener('swiped-left', nextCard);
-        document.addEventListener('swiped-right', prevCard);
+    function resetPhotos() {
+      current = 0;
+      updateDisplay();
+    }
 
-        function setupSwipe() {
-            let touchstartX = 0;
-            let touchendX = 0;
-
-            document.addEventListener('touchstart', e => {
-                touchstartX = e.changedTouches[0].screenX;
-            });
-
-            document.addEventListener('touchend', e => {
-                touchendX = e.changedTouches[0].screenX;
-                if (touchendX < touchstartX - 50) document.dispatchEvent(new Event('swiped-left'));
-                if (touchendX > touchstartX + 50) document.dispatchEvent(new Event('swiped-right'));
-            });
-        }
-
-        setupSwipe();
-        showCard(current);
-    </script>
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') prevPhoto();
+    });
+  </script>
 </body>
 </html>
