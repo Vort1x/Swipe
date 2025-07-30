@@ -1,39 +1,79 @@
 body {
-    background-color: #000;
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  background-color: #0d0d0d;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
-    color: violet;
-    margin: 20px 0;
-    font-size: 2.5em;
+  font-size: 3rem;
+  margin: 30px 0;
+  background: linear-gradient(90deg, #9d00ff, #ff1ead);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.slider {
-    position: relative;
-    max-width: 400px;
-    margin: auto;
-    height: 550px;
-    overflow: hidden;
+.container {
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.card {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+.photo-stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 20px;
-    background-color: #111;
+.photo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  transition: opacity 0.4s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.controls button {
+  background: #1a1a1a;
+  color: white;
+  border: 2px solid #9d00ff;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controls button:hover {
+  background: #9d00ff;
+  color: white;
+}
+
+.empty {
+  color: #aaa;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 40px;
 }
